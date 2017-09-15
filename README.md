@@ -12,7 +12,7 @@ I needed a quick way to get price data, so I made this little command line utili
 
 #### Example
 
-`node btcpricedownloader.js -s 2017-01-01T00:00:00.000 -e 2017-01-03T00:00:00.000 -t 5 -c USD > ~/Desktop/btc_usd.json`
+`node btcpricedownloader.js -s 2017-01-01T00:00:00.000 -e 2017-01-03T00:00:00.000 -t 5 -c USD > ~/Desktop/btc_usd.csv`
 
 ### Response Items
 
