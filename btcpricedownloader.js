@@ -42,19 +42,20 @@ process.argv.forEach(function (val, index, array) {
 getPriceData(0);
 
 function getPriceData(i){
+  var granularity = timescale * 60;
+
   var startOffset = new Date(start.getTime());
-      startOffset.setHours(startOffset.getHours()+(i * 15));
+      startOffset.setHours(startOffset.getHours()+(i * ((200 * timescale) / 60)));
+
   var endOffset = new Date(startOffset.getTime());
-      endOffset.setHours(startOffset.getHours()+15);
+      endOffset.setHours(startOffset.getHours()+((200 * timescale) / 60));
       endOffset = endOffset.getTime() < end.getTime() ? endOffset : end;
 
   if(startOffset.getTime() < end.getTime()){
-    if(i==0)
-      console.log("[");
     var startFormatString = moment(startOffset).format("YYYY-MM-DD[T]HH:mm:ss[.000Z]");
     var endFormatString = moment(endOffset).format("YYYY-MM-DD[T]HH:mm:ss[.000Z]");
-    var differenceInHours = parseInt((endOffset.getTime() - startOffset.getTime())/1000/60/60);
-    var granularity = differenceInHours * (60 / timescale);
+    var differenceInMinutes = parseInt((endOffset.getTime() - startOffset.getTime())/1000/60/60);
+
     var url = `https://api.gdax.com/products/BTC-${currency}/candles?start=${startFormatString}&end=${endFormatString}&granularity=${granularity}`;
     var options = {
       url:url,
@@ -66,8 +67,9 @@ function getPriceData(i){
       requests++;
       if (!error && response.statusCode == 200 && body !== '[]') {
         body = body.substr(1);
-        body = body.substr(0,body.length-1);
-        console.log(body+",");
+        body = body.substr(0,body.length-2);
+        body = body.split("[").join("").split("],").join("\n");
+        console.log(body);
         var timeout = 0;
         if(requests >= 3){
           timeout = 1000;
@@ -84,8 +86,5 @@ function getPriceData(i){
         setTimeout(function(){getPriceData(i);},timeout);
       }
     }.bind({i:i}));
-  }
-  else{
-    console.log("]");
   }
 }
