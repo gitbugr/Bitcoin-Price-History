@@ -18,7 +18,8 @@ I needed a quick way to get price data, so I made this little command line utili
 
 Each bucket is an array of the following information:
 
-`start time
+```
+start time
 
 lowest price during the bucket interval
 
@@ -28,4 +29,4 @@ opening price (first trade) in the bucket interval
 
 closing price (last trade) in the bucket interval
 
-volume of trading activity during the bucket interval`
+volume of trading activity during the bucket interval```
